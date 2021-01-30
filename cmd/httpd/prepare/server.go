@@ -13,6 +13,7 @@ func NewServer(cfg configs.Config, logger *logger.Logger, app *app.App) *echo.Ec
 	e := echo.New()
 
 	// Middleware
+	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORS())
 	if cfg.Env != "dev" {

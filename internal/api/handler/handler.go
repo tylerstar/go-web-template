@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"management/internal/app"
 	"management/internal/configs"
 	"management/internal/logger"
@@ -20,5 +21,13 @@ func NewHandler(e *echo.Echo, cfg configs.Config, logger *logger.Logger, app *ap
 }
 
 func (h *Handler) link(e *echo.Echo) {
-	e.GET("/users", h.getUserHandler)
+	jwtMiddleware := middleware.JWT([]byte(h.cfg.Auth.Secret))
+	v1 := e.Group("/api")
+
+	publicUsers := v1.Group("/users")
+	publicUsers.POST("/token", h.getTokenHandler)
+	publicUsers.POST("", h.createUserHandler)
+
+	privateUsers := v1.Group("/users", jwtMiddleware)
+	privateUsers.GET("", h.getUserHandler)
 }

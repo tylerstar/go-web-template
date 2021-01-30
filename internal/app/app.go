@@ -14,7 +14,9 @@ type (
 	}
 	Repository interface {
 		// users
+		GetUserByID(id string) (*domain.User, error)
 		GetUserByEmail(email string) (*domain.User, error)
+		CreateUser(u *domain.User)(*domain.User, error)
 	}
 )
 

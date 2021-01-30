@@ -6,7 +6,7 @@ import (
 	"management/internal/app"
 	"management/internal/configs"
 	"management/internal/job"
-	Logger "management/internal/logger"
+	"management/internal/logger"
 	"management/internal/repository/entgo"
 	"management/internal/repository/entgo/ent"
 
@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	logger := Logger.NewLogger()
+	logger := logger.NewLogger()
 	defer logger.Sync()
 	logger.Info("starting service", "")
 

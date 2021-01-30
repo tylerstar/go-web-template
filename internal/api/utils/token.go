@@ -2,14 +2,16 @@ package utils
 
 import (
 	"errors"
-
+	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 )
 
 func GetUserIDFromToken(c echo.Context) (string, error) {
-	id, ok := c.Get("user").(string)
-	if !ok {
-		return "", errors.New("failed to get user ID from token claims")
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	userID := claims["userID"].(string)
+	if userID == "" {
+		return "", errors.New("failed to get user id from token claims")
 	}
-	return id, nil
+	return userID, nil
 }
